@@ -1,0 +1,24 @@
+﻿@model GridViewModel<UserViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+    var pagination = new PaginationViewModel
+            {
+                CurrentPage = ViewBag.CurrentPage ?? 1,
+                TotalPages = ViewBag.TotalPages ?? 1,
+                ActionName = "Index"
+            };
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="alert alert-primary" role="alert">
+        A error has occured with the following message: @ViewBag.Error
+    </div>
+}
+else
+{
+    <a class="btn btn-primary" asp-area="" asp-controller="User" asp-action="Create">Create User</a>
+    <br />
+    <partial name="_Grid" model="Model" />
+    <partial name="_Pagination" model="pagination" />
+}

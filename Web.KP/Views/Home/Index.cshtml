@@ -1,0 +1,39 @@
+﻿@{  
+   ViewData["Title"] = "Home Page";  
+}  
+
+<div class="container py-5">  
+   <h2 class="mb-4">Dashboard</h2>  
+
+   <div class="row g-4">  
+       <!-- Users Card -->  
+       <div class="col-md-4">  
+           <div class="card text-white bg-primary h-100">  
+               <div class="card-body">  
+                   <h5 class="card-title">Users</h5>  
+                   <p class="card-text fs-2" id="userCount">@Model.Users</p>  
+               </div>  
+           </div>  
+       </div>  
+
+       <!-- Groups Card -->  
+       <div class="col-md-4">  
+           <div class="card text-white bg-success h-100">  
+               <div class="card-body">  
+                   <h5 class="card-title">Groups</h5>  
+                   <p class="card-text fs-2" id="groupCount">@Model.Groups</p>  
+               </div>  
+           </div>  
+       </div>  
+
+       <!-- Permissions Card -->  
+       <div class="col-md-4">  
+           <div class="card text-white bg-warning h-100">  
+               <div class="card-body">  
+                   <h5 class="card-title">Permissions</h5>  
+                   <p class="card-text fs-2" id="permissionCount">@Model.Permissions</p>  
+               </div>  
+           </div>  
+       </div>  
+   </div>  
+</div>

@@ -1,0 +1,84 @@
+﻿@model dynamic
+@using System.Reflection
+@{
+    var items = Model.Items as IEnumerable<object>;
+    var type = items?.FirstOrDefault()?.GetType();
+    var properties = Model.PropertiesToDisplay != null && Model.PropertiesToDisplay.Length > 0
+           ? type?.GetProperties().Where(p => ((IEnumerable<string>)Model.PropertiesToDisplay).Contains(p.Name)).ToList()
+           : type?.GetProperties().ToList();
+    var keyProp = type?.GetProperty(Model.KeyProperty ?? "Id");
+}
+
+@if (items == null || !items.Any())
+{
+    <p>No data available.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                @foreach (var prop in properties)
+                {
+                    <th>@prop.Name</th>
+                }
+              
+                @if (!string.IsNullOrEmpty(Model.DeleteAction))
+                {
+                    <th></th>
+                }
+                @if (!string.IsNullOrEmpty(Model.EditAction))
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    @foreach (var prop in properties)
+                    {
+                     
+                        if (prop.Name == "Permissions")
+                        {
+                            var value = prop.GetValue(item) as IEnumerable<string>; ;
+                            <td>
+                            @foreach (string permission in value ?? Enumerable.Empty<string>())
+                            {
+                                <span class="badge rounded-pill bg-primary">@permission</span>
+                            }
+                            </td>
+                        }
+                        else
+                        {
+                            var value = prop.GetValue(item);
+                            <td>@(value ?? "-")</td>
+                        }
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.EditAction))
+                    {
+                        var keyValue = keyProp?.GetValue(item);
+                        <td>
+                            <a class="btn btn-sm btn-primary" asp-area="" asp-action="@Model.EditAction" asp-controller="@Model.EditController" asp-route-id="@keyValue">Edit</a>
+                        </td>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.DeleteAction))
+                    {
+                        var keyValue = keyProp?.GetValue(item);
+                        <td>
+                            <form asp-controller="@Model.DeleteController"
+                                  asp-action="@Model.DeleteAction"
+                                  asp-route-id="@keyValue"
+                                  method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}

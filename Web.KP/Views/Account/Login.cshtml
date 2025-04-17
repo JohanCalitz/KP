@@ -1,0 +1,26 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (!Context.User.Identity.IsAuthenticated)
+{
+    <form asp-action="Login" method="post">
+        <div>
+            <label asp-for="Username"></label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+}
+else
+{
+    <a class="btn btn-info" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+}
+

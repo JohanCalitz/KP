@@ -1,0 +1,21 @@
+﻿@model GridViewModel<PermissionViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+    var pagination = new PaginationViewModel
+            {
+                CurrentPage = ViewBag.CurrentPage ?? 1,
+                TotalPages = ViewBag.TotalPages ?? 1,
+                ActionName = "Index" // replace with your action name
+            };
+}
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="alert alert-primary" role="alert">
+        A error has occured with the following message: @ViewBag.Error
+    </div>
+}
+else
+{
+    <partial name="_Grid" model="Model" />
+    <partial name="_Pagination" model="pagination" />
+}
